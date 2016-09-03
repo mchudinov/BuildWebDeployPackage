@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Run">   
+	<PropertyGroup>
+		<Configuration>Release</Configuration>
+		<SolutionName>BuildWebDeployPackage</SolutionName>
+	</PropertyGroup>
+
+	<Target Name="Run">
+		<CallTarget Targets="Clean" />
+		<CallTarget Targets="Restore" />
+		<CallTarget Targets="Build" />
+		<CallTarget Targets="Test" />
+	</Target>
+ 
+	<Target Name="Clean">
+		<Message Text="Clean" />
+		<RemoveDir Directories="$(SolutionName)/bin; Test/bin;" ContinueOnError="False"/>
+		<RemoveDir Directories="$(SolutionName)/obj; Test/obj;" ContinueOnError="False"/>
+	</Target>
+
+	<Target Name="Restore">
+	<Message Text="Restore NuGet packages" />
+	<Exec Command="NuGet.exe restore" ContinueOnError="False"/>
+	</Target>
+  
+	<Target Name="Build">
+	<Message Text="Build Release" />
+	<MSBuild Projects="BuildTest/BuildTest.csproj" Properties="Configuration=Release" ContinueOnError="False"/>
+	<MSBuild Projects="Test/Test.csproj" Properties="Configuration=Release" ContinueOnError="False"/>
+	</Target>
+
+	<UsingTask AssemblyFile="packages/MSBuildTasks.1.4.0.78/tools/MSBuild.Community.Tasks.dll" TaskName="NUnit"/> 
+	<Target Name="Test">
+	<Message Text="Run tests" />
+	<NUnit Assemblies="Test/bin/Release/Test.dll" ToolPath="/usr/bin" Condition=" '$(OS)' == 'Unix'" />
+	<NUnit Assemblies="Test/bin/Release/Test.dll" ToolPath="c:\lib\nunit\bin\" Condition=" '$(OS)' == 'Windows_NT'" />
+	</Target>
+  
+</Project>
