@@ -21,7 +21,7 @@ namespace BuildWebDeployPackage
                 StreamReader reader = new StreamReader(resStream);
                 serviceresponse = reader.ReadToEnd();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //
             }
