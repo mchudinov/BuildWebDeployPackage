@@ -1,1 +1,0 @@
-msbuild Build.proj /p:Configuration=Prod

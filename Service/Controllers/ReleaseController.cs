@@ -2,12 +2,12 @@
 
 namespace ServiceProd.Controllers
 {
-    public class ProdController : ApiController
+    public class ReleaseController : ApiController
     {
         // GET /api/prod
         public string Get()
         {
-            return "Prod";
+            return "Release";
         }
     }
 }
