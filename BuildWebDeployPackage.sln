@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildWebDeployPackage", "BuildWebDeployPackage\BuildWebDeployPackage.csproj", "{3C28BC5D-59F6-4D68-AFCC-1DBFEC6B50B3}"
 EndProject
@@ -12,8 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Build_release.cmd = Build_release.cmd
 		Build_stage.cmd = Build_stage.cmd
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{EECE172B-5BD4-424F-9835-F08A6F1A6958}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,12 +26,6 @@ Global
 		{3C28BC5D-59F6-4D68-AFCC-1DBFEC6B50B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3C28BC5D-59F6-4D68-AFCC-1DBFEC6B50B3}.Stage|Any CPU.ActiveCfg = Stage|Any CPU
 		{3C28BC5D-59F6-4D68-AFCC-1DBFEC6B50B3}.Stage|Any CPU.Build.0 = Stage|Any CPU
-		{EECE172B-5BD4-424F-9835-F08A6F1A6958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EECE172B-5BD4-424F-9835-F08A6F1A6958}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EECE172B-5BD4-424F-9835-F08A6F1A6958}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EECE172B-5BD4-424F-9835-F08A6F1A6958}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EECE172B-5BD4-424F-9835-F08A6F1A6958}.Stage|Any CPU.ActiveCfg = Stage|Any CPU
-		{EECE172B-5BD4-424F-9835-F08A6F1A6958}.Stage|Any CPU.Build.0 = Stage|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
