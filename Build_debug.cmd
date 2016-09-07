@@ -1,1 +1,1 @@
-msbuild Build.proj /p:Configuration=Debug /verbosity:detailed
+msbuild Build.proj /p:Configuration=Debug
