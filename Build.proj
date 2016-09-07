@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Configuration>Release</Configuration>
     <ProjectName>BuildWebDeployPackage</ProjectName>
+    <TemporaryFolder>temp</TemporaryFolder>
   </PropertyGroup>
 
   <Target Name="Run">
@@ -31,9 +32,9 @@
   <UsingTask AssemblyFile="packages/MSBuildTasks.1.5.0.196/tools/MSBuild.Community.Tasks.dll" TaskName="Zip"/> 
   <Target Name="Pack">
     <MSBuild Targets="Package" Projects="$(ProjectName)/$(ProjectName).csproj" ContinueOnError="false" Properties="PublishProfile=$(Configuration)" />
-    <CreateItem Include="TempPack\$(Configuration)\*.*" >
+    <CreateItem Include="$(TemporaryFolder)\$(Configuration)\*.*" >
       <Output ItemName="ZipFiles" TaskParameter="Include"/>
     </CreateItem>
-    <Zip ZipFileName="$(ProjectName)_$(Configuration).zip" WorkingDirectory="TempPack" Files="@(ZipFiles)" />
+    <Zip ZipFileName="$(ProjectName)_$(Configuration).zip" WorkingDirectory="$(TemporaryFolder)" Files="@(ZipFiles)" />
   </Target>    
 </Project>
