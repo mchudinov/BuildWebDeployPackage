@@ -9,6 +9,7 @@
   <Target Name="Run">
     <CallTarget Targets="Clean" />
     <CallTarget Targets="Restore" />
+	<CallTarget Targets="Version" />
     <CallTarget Targets="Build" />
     <CallTarget Targets="Pack" />
   </Target>
@@ -24,17 +25,60 @@
     <Exec Command="NuGet.exe restore" ContinueOnError="False"/>
   </Target>
   
+   <UsingTask AssemblyFile="packages/MSBuild.Extension.Pack.1.8.0/tools/net40/MSBuild.ExtensionPack.dll" TaskName="AssemblyInfo"/>
+	<Target Name="Version">
+		<Message Text="Versioning assemblies" />
+	 
+		<ItemGroup>
+		  <AssemblyInfoFiles Include="**\AssemblyInfo.cs" />
+		</ItemGroup>
+	 
+		<AssemblyInfo
+			AssemblyInfoFiles="@(AssemblyInfoFiles)"
+			
+			AssemblyMajorVersion="$(MajorVersion)"
+			AssemblyMinorVersion="$(MinorVersion)"
+			AssemblyBuildNumberType="DateString"
+			AssemblyBuildNumberFormat="MMdd"
+			AssemblyRevisionType="AutoIncrement"
+			AssemblyRevisionFormat="000"
+		  
+			AssemblyFileMajorVersion="$(MajorVersion)"
+			AssemblyFileMinorVersion="$(MinorVersion)"
+			AssemblyFileBuildNumberType="DateString"
+			AssemblyFileBuildNumberFormat="MMdd"
+			AssemblyFileRevisionType="AutoIncrement"
+			AssemblyFileRevisionFormat="000"
+		/>
+	</Target>  
+  
   <Target Name="Build">
     <Message Text="Build $(Configuration)" />
     <MSBuild Projects="$(ProjectName)/$(ProjectName).csproj" Properties="Configuration=$(Configuration)" ContinueOnError="False"/>
   </Target>
   
   <UsingTask AssemblyFile="packages/MSBuildTasks.1.5.0.196/tools/MSBuild.Community.Tasks.dll" TaskName="Zip"/>
+  <UsingTask AssemblyFile="packages/MSBuild.Extension.Pack.1.8.0/tools/net40/MSBuild.ExtensionPack.dll" TaskName="Assembly"/>
   <Target Name="Pack">
+	
+	<PropertyGroup>
+		<BinaryFolder>$(ProjectName)/bin</BinaryFolder>
+		<MainExecutable>$(BinaryFolder)/$(ProjectName).dll</MainExecutable>
+	</PropertyGroup>
+	<Assembly TaskAction="GetInfo" NetAssembly="$(MainExecutable)"> 
+		<Output TaskParameter="OutputItems" ItemName="Info"/> 
+	</Assembly>
+	<Message Text="Identity: %(Info.Identity)" /> 
+	<Message Text="FullName: %(Info.FullName)" /> 
+	<Message Text="FileVersion: %(Info.FileVersion)" /> 
+	<Message Text="AssemblyVersion: %(Info.AssemblyVersion)" />  
+  
     <MSBuild Targets="Package" Projects="$(ProjectName)/$(ProjectName).csproj" ContinueOnError="false" Properties="PublishProfile=$(Configuration)" />
     <CreateItem Include="$(TemporaryFolder)\$(Configuration)\*.*" >
       <Output ItemName="ZipFiles" TaskParameter="Include"/>
     </CreateItem>
-    <Zip ZipFileName="$(ProjectName)_$(Configuration).zip" WorkingDirectory="$(TemporaryFolder)" Files="@(ZipFiles)" />
-  </Target>    
+    <Zip ZipFileName="$(ProjectName)_%(Info.AssemblyVersion)_$(Configuration).zip" WorkingDirectory="$(TemporaryFolder)" Files="@(ZipFiles)" />
+	<RemoveDir Directories="$(TemporaryFolder)" ContinueOnError="False"/>
+  </Target> 
+
 </Project>
