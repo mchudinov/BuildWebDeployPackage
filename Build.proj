@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Run">   
-  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
   <PropertyGroup>
     <Configuration>Release</Configuration>
     <ProjectName>BuildWebDeployPackage</ProjectName>
@@ -30,6 +29,7 @@
     <MSBuild Projects="$(ProjectName)/$(ProjectName).csproj" Properties="Configuration=$(Configuration)" ContinueOnError="False"/>
   </Target>
   
+  <UsingTask AssemblyFile="packages/MSBuildTasks.1.5.0.196/tools/MSBuild.Community.Tasks.dll" TaskName="Zip"/>
   <Target Name="Pack">
     <MSBuild Targets="Package" Projects="$(ProjectName)/$(ProjectName).csproj" ContinueOnError="false" Properties="PublishProfile=$(Configuration)" />
     <CreateItem Include="$(TemporaryFolder)\$(Configuration)\*.*" >
