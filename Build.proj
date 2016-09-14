@@ -9,7 +9,7 @@
   <Target Name="Run">
     <CallTarget Targets="Clean" />
     <CallTarget Targets="Restore" />
-	<CallTarget Targets="Version" />
+    <CallTarget Targets="Version" />
     <CallTarget Targets="Build" />
     <CallTarget Targets="Pack" />
   </Target>
@@ -26,31 +26,31 @@
   </Target>
   
   <UsingTask AssemblyFile="packages/MSBuild.Extension.Pack.1.8.0/tools/net40/MSBuild.ExtensionPack.dll" TaskName="AssemblyInfo"/>
-	<Target Name="Version">
-		<Message Text="Versioning assemblies" />
-	 
-		<ItemGroup>
-		  <AssemblyInfoFiles Include="**\AssemblyInfo.cs" />
-		</ItemGroup>
-	 
-		<AssemblyInfo
-			AssemblyInfoFiles="@(AssemblyInfoFiles)"
-			
-			AssemblyMajorVersion="$(MajorVersion)"
-			AssemblyMinorVersion="$(MinorVersion)"
-			AssemblyBuildNumberType="DateString"
-			AssemblyBuildNumberFormat="MMdd"
-			AssemblyRevisionType="AutoIncrement"
-			AssemblyRevisionFormat="000"
-		  
-			AssemblyFileMajorVersion="$(MajorVersion)"
-			AssemblyFileMinorVersion="$(MinorVersion)"
-			AssemblyFileBuildNumberType="DateString"
-			AssemblyFileBuildNumberFormat="MMdd"
-			AssemblyFileRevisionType="AutoIncrement"
-			AssemblyFileRevisionFormat="000"
-		/>
-	</Target>  
+  <Target Name="Version">
+    <Message Text="Versioning assemblies" />
+   
+    <ItemGroup>
+      <AssemblyInfoFiles Include="**\AssemblyInfo.cs" />
+    </ItemGroup>
+   
+    <AssemblyInfo
+      AssemblyInfoFiles="@(AssemblyInfoFiles)"
+      
+      AssemblyMajorVersion="$(MajorVersion)"
+      AssemblyMinorVersion="$(MinorVersion)"
+      AssemblyBuildNumberType="DateString"
+      AssemblyBuildNumberFormat="MMdd"
+      AssemblyRevisionType="AutoIncrement"
+      AssemblyRevisionFormat="000"
+      
+      AssemblyFileMajorVersion="$(MajorVersion)"
+      AssemblyFileMinorVersion="$(MinorVersion)"
+      AssemblyFileBuildNumberType="DateString"
+      AssemblyFileBuildNumberFormat="MMdd"
+      AssemblyFileRevisionType="AutoIncrement"
+      AssemblyFileRevisionFormat="000"
+    />
+  </Target>  
   
   <Target Name="Build">
     <Message Text="Build $(Configuration)" />
@@ -60,17 +60,17 @@
   <UsingTask AssemblyFile="packages/MSBuildTasks.1.5.0.196/tools/MSBuild.Community.Tasks.dll" TaskName="Zip"/>
   <UsingTask AssemblyFile="packages/MSBuild.Extension.Pack.1.8.0/tools/net40/MSBuild.ExtensionPack.dll" TaskName="Assembly"/>
   <Target Name="Pack">	
-	  <PropertyGroup>
-		  <BinaryFolder>$(ProjectName)/bin</BinaryFolder>
-		  <MainExecutable>$(BinaryFolder)/$(ProjectName).dll</MainExecutable>
-	  </PropertyGroup>
-	  <Assembly TaskAction="GetInfo" NetAssembly="$(MainExecutable)"> 
-		  <Output TaskParameter="OutputItems" ItemName="Info"/> 
-	  </Assembly>
-	  <Message Text="Identity: %(Info.Identity)" /> 
-	  <Message Text="FullName: %(Info.FullName)" /> 
-	  <Message Text="FileVersion: %(Info.FileVersion)" /> 
-	  <Message Text="AssemblyVersion: %(Info.AssemblyVersion)" />  
+    <PropertyGroup>
+      <BinaryFolder>$(ProjectName)/bin</BinaryFolder>
+      <MainExecutable>$(BinaryFolder)/$(ProjectName).dll</MainExecutable>
+    </PropertyGroup>
+    <Assembly TaskAction="GetInfo" NetAssembly="$(MainExecutable)"> 
+      <Output TaskParameter="OutputItems" ItemName="Info"/> 
+    </Assembly>
+    <Message Text="Identity: %(Info.Identity)" /> 
+    <Message Text="FullName: %(Info.FullName)" /> 
+    <Message Text="FileVersion: %(Info.FileVersion)" /> 
+    <Message Text="AssemblyVersion: %(Info.AssemblyVersion)" />  
   
     <MSBuild Targets="Package" Projects="$(ProjectName)/$(ProjectName).csproj" ContinueOnError="false" Properties="PublishProfile=$(Configuration);
              DesktopBuildPackageLocation=..\$(TemporaryFolder)\$(Configuration)_%(Info.AssemblyVersion)\$(ProjectName)_$(Configuration)_%(Info.AssemblyVersion).zip" />
