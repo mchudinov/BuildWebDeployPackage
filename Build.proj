@@ -25,7 +25,7 @@
     <Exec Command="NuGet.exe restore" ContinueOnError="False"/>
   </Target>
   
-   <UsingTask AssemblyFile="packages/MSBuild.Extension.Pack.1.8.0/tools/net40/MSBuild.ExtensionPack.dll" TaskName="AssemblyInfo"/>
+  <UsingTask AssemblyFile="packages/MSBuild.Extension.Pack.1.8.0/tools/net40/MSBuild.ExtensionPack.dll" TaskName="AssemblyInfo"/>
 	<Target Name="Version">
 		<Message Text="Versioning assemblies" />
 	 
@@ -59,26 +59,26 @@
   
   <UsingTask AssemblyFile="packages/MSBuildTasks.1.5.0.196/tools/MSBuild.Community.Tasks.dll" TaskName="Zip"/>
   <UsingTask AssemblyFile="packages/MSBuild.Extension.Pack.1.8.0/tools/net40/MSBuild.ExtensionPack.dll" TaskName="Assembly"/>
-  <Target Name="Pack">
-	
-	<PropertyGroup>
-		<BinaryFolder>$(ProjectName)/bin</BinaryFolder>
-		<MainExecutable>$(BinaryFolder)/$(ProjectName).dll</MainExecutable>
-	</PropertyGroup>
-	<Assembly TaskAction="GetInfo" NetAssembly="$(MainExecutable)"> 
-		<Output TaskParameter="OutputItems" ItemName="Info"/> 
-	</Assembly>
-	<Message Text="Identity: %(Info.Identity)" /> 
-	<Message Text="FullName: %(Info.FullName)" /> 
-	<Message Text="FileVersion: %(Info.FileVersion)" /> 
-	<Message Text="AssemblyVersion: %(Info.AssemblyVersion)" />  
+  <Target Name="Pack">	
+	  <PropertyGroup>
+		  <BinaryFolder>$(ProjectName)/bin</BinaryFolder>
+		  <MainExecutable>$(BinaryFolder)/$(ProjectName).dll</MainExecutable>
+	  </PropertyGroup>
+	  <Assembly TaskAction="GetInfo" NetAssembly="$(MainExecutable)"> 
+		  <Output TaskParameter="OutputItems" ItemName="Info"/> 
+	  </Assembly>
+	  <Message Text="Identity: %(Info.Identity)" /> 
+	  <Message Text="FullName: %(Info.FullName)" /> 
+	  <Message Text="FileVersion: %(Info.FileVersion)" /> 
+	  <Message Text="AssemblyVersion: %(Info.AssemblyVersion)" />  
   
-    <MSBuild Targets="Package" Projects="$(ProjectName)/$(ProjectName).csproj" ContinueOnError="false" Properties="PublishProfile=$(Configuration)" />
-    <CreateItem Include="$(TemporaryFolder)\$(Configuration)\*.*" >
+    <MSBuild Targets="Package" Projects="$(ProjectName)/$(ProjectName).csproj" ContinueOnError="false" Properties="PublishProfile=$(Configuration);
+             DesktopBuildPackageLocation=..\$(TemporaryFolder)\$(Configuration)_%(Info.AssemblyVersion)\$(ProjectName)_$(Configuration)_%(Info.AssemblyVersion).zip" />
+    <CreateItem Include="$(TemporaryFolder)\$(Configuration)_%(Info.AssemblyVersion)\*.*" >
       <Output ItemName="ZipFiles" TaskParameter="Include"/>
     </CreateItem>
-    <Zip ZipFileName="$(ProjectName)_%(Info.AssemblyVersion)_$(Configuration).zip" WorkingDirectory="$(TemporaryFolder)" Files="@(ZipFiles)" />
-	<RemoveDir Directories="$(TemporaryFolder)" ContinueOnError="False"/>
+    <Zip ZipFileName="$(ProjectName)_%(Info.AssemblyVersion)_$(Configuration).zip" WorkingDirectory="$(TemporaryFolder)\$(Configuration)_%(Info.AssemblyVersion)" Files="@(ZipFiles)" />
+    <RemoveDir Directories="$(TemporaryFolder)" ContinueOnError="False"/>
   </Target> 
 
 </Project>
