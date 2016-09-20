@@ -71,13 +71,18 @@
     <Message Text="FullName: %(Info.FullName)" /> 
     <Message Text="FileVersion: %(Info.FileVersion)" /> 
     <Message Text="AssemblyVersion: %(Info.AssemblyVersion)" />  
-  
-    <MSBuild Targets="Package" Projects="$(ProjectName)/$(ProjectName).csproj" ContinueOnError="false" Properties="PublishProfile=$(Configuration);
-             DesktopBuildPackageLocation=..\$(TemporaryFolder)\$(Configuration)_%(Info.AssemblyVersion)\$(ProjectName)_$(Configuration)_%(Info.AssemblyVersion).zip" />
-    <CreateItem Include="$(TemporaryFolder)\$(Configuration)_%(Info.AssemblyVersion)\*.*" >
+	
+    <PropertyGroup>
+	  <PackageFolder>$(TemporaryFolder)\$(ProjectName)_$(Configuration)_%(Info.AssemblyVersion)</PackageFolder>
+    </PropertyGroup>	
+	
+    <MSBuild Targets="Package" Projects="$(ProjectName)/$(ProjectName).csproj" ContinueOnError="false" 
+		Properties="PublishProfile=$(Configuration);
+             DesktopBuildPackageLocation=..\$(PackageFolder)\$(ProjectName)_$(Configuration)_%(Info.AssemblyVersion).zip" />
+    <CreateItem Include="$(PackageFolder)\*.*" >
       <Output ItemName="ZipFiles" TaskParameter="Include"/>
     </CreateItem>
-    <Zip ZipFileName="$(ProjectName)_%(Info.AssemblyVersion)_$(Configuration).zip" WorkingDirectory="$(TemporaryFolder)\$(Configuration)_%(Info.AssemblyVersion)" Files="@(ZipFiles)" />
+    <Zip ZipFileName="$(ProjectName)_$(Configuration)_%(Info.AssemblyVersion).zip" WorkingDirectory="$(PackageFolder)" Files="@(ZipFiles)" />
     <RemoveDir Directories="$(TemporaryFolder)" ContinueOnError="False"/>
   </Target> 
 
