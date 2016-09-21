@@ -78,18 +78,17 @@
     </PropertyGroup>	
 	
     <MSBuild Targets="Package" Projects="$(ProjectName)/$(ProjectName).csproj" ContinueOnError="False" 
-		Properties="PublishProfile=$(Configuration);
-             DesktopBuildPackageLocation=..\$(PackageFolder)\$(ZipFileName)" />
+		  Properties="PublishProfile=$(Configuration);DesktopBuildPackageLocation=..\$(PackageFolder)\$(ZipFileName)" />
     
-	<CreateItem Include="$(PackageFolder)\*.*" >
+	  <CreateItem Include="$(PackageFolder)\*.*" >
       <Output ItemName="ZipFiles" TaskParameter="Include"/>
     </CreateItem>
 	
-	<ConvertToAbsolutePath Paths="$(TemporaryFolder)">
+	  <ConvertToAbsolutePath Paths="$(TemporaryFolder)">
 		<Output TaskParameter="AbsolutePaths" PropertyName="TemporaryFolderAbsolute"/>
     </ConvertToAbsolutePath>
 	
-    <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(ZipFiles)" RemoveRoot="$(TemporaryFolderAbsolute)" ZipFileName="$(ZipFileName)"/>
+    <Zip TaskAction="Create" CompressFiles="@(ZipFiles)" RemoveRoot="$(TemporaryFolderAbsolute)" ZipFileName="$(ZipFileName)"/>
     <RemoveDir Directories="$(TemporaryFolder)" ContinueOnError="True"/>
   </Target> 
 
