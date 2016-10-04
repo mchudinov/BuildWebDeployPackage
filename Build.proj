@@ -71,23 +71,23 @@
     <Message Text="FullName: %(Info.FullName)" /> 
     <Message Text="FileVersion: %(Info.FileVersion)" /> 
     <Message Text="AssemblyVersion: %(Info.AssemblyVersion)" />  
-	
+  
     <PropertyGroup>
-	  <PackageFolder>$(TemporaryFolder)\$(ProjectName)_$(Configuration)_%(Info.AssemblyVersion)</PackageFolder>
-	  <ZipFileName>$(ProjectName)_$(Configuration)_%(Info.AssemblyVersion).zip</ZipFileName>
+      <PackageFolder>$(TemporaryFolder)\$(ProjectName)_$(Configuration)_%(Info.AssemblyVersion)</PackageFolder>
+      <ZipFileName>$(ProjectName)_$(Configuration)_%(Info.AssemblyVersion).zip</ZipFileName>
     </PropertyGroup>	
-	
+  
     <MSBuild Targets="Package" Projects="$(ProjectName)/$(ProjectName).csproj" ContinueOnError="False" 
-		  Properties="PublishProfile=$(Configuration);DesktopBuildPackageLocation=..\$(PackageFolder)\$(ZipFileName)" />
+      Properties="PublishProfile=$(Configuration);DesktopBuildPackageLocation=..\$(PackageFolder)\$(ZipFileName)" />
     
-	  <CreateItem Include="$(PackageFolder)\*.*" >
+    <CreateItem Include="$(PackageFolder)\*.*" >
       <Output ItemName="ZipFiles" TaskParameter="Include"/>
     </CreateItem>
-	
-	  <ConvertToAbsolutePath Paths="$(TemporaryFolder)">
-		<Output TaskParameter="AbsolutePaths" PropertyName="TemporaryFolderAbsolute"/>
+  
+    <ConvertToAbsolutePath Paths="$(TemporaryFolder)">
+      <Output TaskParameter="AbsolutePaths" PropertyName="TemporaryFolderAbsolute"/>
     </ConvertToAbsolutePath>
-	
+  
     <Zip TaskAction="Create" CompressFiles="@(ZipFiles)" RemoveRoot="$(TemporaryFolderAbsolute)" ZipFileName="$(ZipFileName)"/>
     <RemoveDir Directories="$(TemporaryFolder)" ContinueOnError="True"/>
   </Target> 
